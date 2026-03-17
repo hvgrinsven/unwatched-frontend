@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-brand:        #E8001C;
+  --color-brand-dark:   #B8001A;
+  --color-bg:           #F5F5F5;
+  --color-surface:      #FFFFFF;
+  --color-text-primary: #0D0D0D;
+  --color-text-muted:   #666666;
+  --color-border:       #E0E0E0;
+  --color-tag-bg:       #FFF0F0;
+  --color-tag-text:     #E8001C;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: "DM Sans", sans-serif;
+}
