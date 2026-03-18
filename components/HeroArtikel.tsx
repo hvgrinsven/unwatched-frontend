@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Artikel } from "@/lib/strapi";
-import { getThumbnailUrl } from "@/lib/strapi";
+import type { Artikel } from "@/lib/supabase";
 
 const categorieLabels: Record<string, string> = {
   film: "Film",
@@ -25,7 +24,7 @@ interface Props {
 }
 
 export default function HeroArtikel({ artikel }: Props) {
-  const thumbnailUrl = getThumbnailUrl(artikel.thumbnail);
+  const thumbnailUrl = artikel.thumbnail_url ?? "/placeholder.jpg";
   const href = artikel.slug ? `/${artikel.slug}` : `/artikel/${artikel.id}`;
 
   return (
@@ -33,14 +32,14 @@ export default function HeroArtikel({ artikel }: Props) {
       <div className="relative aspect-video w-full overflow-hidden bg-border">
         <Image
           src={thumbnailUrl}
-          alt={artikel.thumbnail?.alternativeText ?? artikel.titel}
+          alt={artikel.titel}
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 860px"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
 
-        {/* Gradient overlay — sterk onderaan voor leesbaarheid */}
+        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
         {/* Tekst overlay */}
@@ -52,10 +51,10 @@ export default function HeroArtikel({ artikel }: Props) {
             {artikel.titel}
           </h2>
           <time
-            dateTime={artikel.publishedAt}
+            dateTime={artikel.published_at}
             className="block mt-1.5 text-xs text-white/70 font-sans"
           >
-            {formatDatum(artikel.publishedAt)}
+            {formatDatum(artikel.published_at)}
           </time>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Artikel } from "@/lib/strapi";
-import { getThumbnailUrl } from "@/lib/strapi";
+import type { Artikel } from "@/lib/supabase";
 
 function formatDatum(iso: string): string {
   return new Date(iso).toLocaleDateString("nl-NL", {
@@ -16,7 +15,7 @@ interface Props {
 }
 
 export default function ArtikelKaart({ artikel }: Props) {
-  const thumbnailUrl = getThumbnailUrl(artikel.thumbnail);
+  const thumbnailUrl = artikel.thumbnail_url ?? "/placeholder.jpg";
   const href = artikel.slug ? `/${artikel.slug}` : `/artikel/${artikel.id}`;
 
   return (
@@ -28,7 +27,7 @@ export default function ArtikelKaart({ artikel }: Props) {
       <div className="relative aspect-video w-full overflow-hidden bg-border">
         <Image
           src={thumbnailUrl}
-          alt={artikel.thumbnail?.alternativeText ?? artikel.titel}
+          alt={artikel.titel}
           fill
           sizes="(max-width: 1024px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -41,10 +40,10 @@ export default function ArtikelKaart({ artikel }: Props) {
           {artikel.titel}
         </h3>
         <time
-          dateTime={artikel.publishedAt}
+          dateTime={artikel.published_at}
           className="text-xs text-text-muted font-sans mt-auto pt-1"
         >
-          {formatDatum(artikel.publishedAt)}
+          {formatDatum(artikel.published_at)}
         </time>
       </div>
     </Link>

@@ -1,4 +1,4 @@
-import type { Artikel } from "@/lib/strapi";
+import type { Artikel } from "@/lib/supabase";
 import ArtikelKaart from "./ArtikelKaart";
 
 interface Props {

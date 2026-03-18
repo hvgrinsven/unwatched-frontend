@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { Categorie } from "@/lib/strapi";
-import { getArtikelsByCategorie } from "@/lib/strapi";
+import type { Categorie } from "@/lib/supabase";
+import { getArtikelenByCategorie } from "@/lib/supabase";
 import ArtikelGrid from "@/components/ArtikelGrid";
 
 export const revalidate = 1800;
@@ -50,7 +50,7 @@ export default async function CategoriePagina({ params }: Props) {
   }
 
   const categorie = params.naam as Categorie;
-  const artikels = await getArtikelsByCategorie(categorie, 20);
+  const artikelen = await getArtikelenByCategorie(categorie, 20);
   const label = categorieLabels[categorie];
 
   return (
@@ -62,22 +62,22 @@ export default async function CategoriePagina({ params }: Props) {
         <h1 className="font-sora font-bold text-2xl text-text-primary mt-0.5">
           {label}
         </h1>
-        {artikels.length > 0 && (
+        {artikelen.length > 0 && (
           <p className="text-sm text-text-muted font-sans mt-1">
-            {artikels.length} artikel{artikels.length !== 1 ? "en" : ""}{" "}
+            {artikelen.length} artikel{artikelen.length !== 1 ? "en" : ""}{" "}
             gevonden
           </p>
         )}
       </div>
 
-      {artikels.length === 0 ? (
+      {artikelen.length === 0 ? (
         <div className="py-12 text-center">
           <p className="text-text-muted font-sans text-sm">
             Nog geen artikelen in de categorie &ldquo;{label}&rdquo;.
           </p>
         </div>
       ) : (
-        <ArtikelGrid artikels={artikels} />
+        <ArtikelGrid artikels={artikelen} />
       )}
     </div>
   );

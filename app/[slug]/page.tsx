@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getArtikelBySlug, getAllSlugs, getThumbnailUrl } from "@/lib/strapi";
+import { getArtikel, getAllSlugs } from "@/lib/supabase";
 import RichTextRenderer from "@/components/RichTextRenderer";
 
 export const revalidate = 1800;
@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const artikel = await getArtikelBySlug(params.slug);
+  const artikel = await getArtikel(params.slug);
 
   if (!artikel) {
     return { title: "Artikel niet gevonden" };
@@ -29,11 +29,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: artikel.titel,
       description: artikel.samenvatting,
-      images: artikel.thumbnail
-        ? [{ url: getThumbnailUrl(artikel.thumbnail) }]
-        : [],
+      images: artikel.thumbnail_url ? [{ url: artikel.thumbnail_url }] : [],
       type: "article",
-      publishedTime: artikel.publishedAt,
+      publishedTime: artikel.published_at,
     },
   };
 }
@@ -57,13 +55,13 @@ function formatDatum(iso: string): string {
 }
 
 export default async function ArtikelPagina({ params }: Props) {
-  const artikel = await getArtikelBySlug(params.slug);
+  const artikel = await getArtikel(params.slug);
 
   if (!artikel) {
     notFound();
   }
 
-  const thumbnailUrl = getThumbnailUrl(artikel.thumbnail);
+  const thumbnailUrl = artikel.thumbnail_url ?? "/placeholder.jpg";
 
   return (
     <article className="max-w-2xl mx-auto">
@@ -97,8 +95,8 @@ export default async function ArtikelPagina({ params }: Props) {
 
       {/* Meta */}
       <div className="flex items-center gap-3 text-xs text-text-muted font-sans mb-5">
-        <time dateTime={artikel.publishedAt}>
-          {formatDatum(artikel.publishedAt)}
+        <time dateTime={artikel.published_at}>
+          {formatDatum(artikel.published_at)}
         </time>
         {artikel.bron_url && (
           <>
@@ -116,11 +114,11 @@ export default async function ArtikelPagina({ params }: Props) {
       </div>
 
       {/* Thumbnail */}
-      {artikel.thumbnail && (
+      {artikel.thumbnail_url && (
         <div className="relative aspect-video w-full rounded overflow-hidden mb-6">
           <Image
             src={thumbnailUrl}
-            alt={artikel.thumbnail.alternativeText ?? artikel.titel}
+            alt={artikel.titel}
             fill
             priority
             sizes="(max-width: 640px) 100vw, 672px"
