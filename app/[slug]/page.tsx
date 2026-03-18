@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getArtikelBySlug, getAllSlugs, getThumbnailUrl } from "@/lib/strapi";
 import RichTextRenderer from "@/components/RichTextRenderer";
 
-export const revalidate = 60;
+export const revalidate = 1800;
 
 interface Props {
   params: { slug: string };

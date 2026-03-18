@@ -4,7 +4,7 @@ import type { Categorie } from "@/lib/strapi";
 import { getArtikelsByCategorie } from "@/lib/strapi";
 import ArtikelGrid from "@/components/ArtikelGrid";
 
-export const revalidate = 60;
+export const revalidate = 1800;
 
 const GELDIGE_CATEGORIEËN: Categorie[] = [
   "film",
