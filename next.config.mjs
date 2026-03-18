@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "*.strapiapp.com",
       },
+      {
+        protocol: "https",
+        hostname: "izploaurfapjqucrjlrt.supabase.co",
+      },
     ],
   },
 };

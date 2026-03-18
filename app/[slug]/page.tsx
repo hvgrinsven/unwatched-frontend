@@ -5,7 +5,7 @@ import Link from "next/link";
 import { getArtikel, getAllSlugs } from "@/lib/supabase";
 import RichTextRenderer from "@/components/RichTextRenderer";
 
-export const revalidate = 1800;
+export const revalidate = 60;
 
 interface Props {
   params: { slug: string };

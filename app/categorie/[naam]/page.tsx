@@ -4,7 +4,7 @@ import type { Categorie } from "@/lib/supabase";
 import { getArtikelenByCategorie } from "@/lib/supabase";
 import ArtikelGrid from "@/components/ArtikelGrid";
 
-export const revalidate = 1800;
+export const revalidate = 60;
 
 const GELDIGE_CATEGORIEËN: Categorie[] = [
   "film",

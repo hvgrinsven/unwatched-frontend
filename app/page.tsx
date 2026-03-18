@@ -4,7 +4,7 @@ import HeroArtikel from "@/components/HeroArtikel";
 import ArtikelRij from "@/components/ArtikelRij";
 import ArtikelKaart from "@/components/ArtikelKaart";
 
-export const revalidate = 1800;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "UnWatched Nieuws — Film & Series",
