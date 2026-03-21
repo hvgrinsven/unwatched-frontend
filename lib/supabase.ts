@@ -79,6 +79,28 @@ export async function getArtikel(slug: string): Promise<Artikel | null> {
   return data;
 }
 
+export async function getGerelateerdeArtikelen(
+  categorie: Categorie,
+  huidigSlug: string,
+  limit = 3
+): Promise<Artikel[]> {
+  const { data, error } = await supabase
+    .from("artikelen")
+    .select("*")
+    .eq("gepubliceerd", true)
+    .eq("categorie", categorie)
+    .neq("slug", huidigSlug)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Supabase fout:", error.message);
+    return [];
+  }
+
+  return data ?? [];
+}
+
 export async function getAllSlugs(): Promise<string[]> {
   const { data, error } = await supabase
     .from("artikelen")

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getArtikel, getAllSlugs } from "@/lib/supabase";
+import { getArtikel, getAllSlugs, getGerelateerdeArtikelen } from "@/lib/supabase";
+import ArtikelKaart from "@/components/ArtikelKaart";
 import RichTextRenderer from "@/components/RichTextRenderer";
 
 export const revalidate = 60;
@@ -60,6 +61,8 @@ export default async function ArtikelPagina({ params }: Props) {
   if (!artikel) {
     notFound();
   }
+
+  const gerelateerd = await getGerelateerdeArtikelen(artikel.categorie, artikel.slug);
 
   const thumbnailUrl = artikel.thumbnail_url ?? "/placeholder.jpg";
 
@@ -136,6 +139,19 @@ export default async function ArtikelPagina({ params }: Props) {
       <div className="font-serif text-text-primary space-y-4 leading-relaxed">
         <RichTextRenderer inhoud={artikel.inhoud} />
       </div>
+      {/* Gerelateerde artikelen */}
+      {gerelateerd.length > 0 && (
+        <aside className="mt-10 pt-6 border-t border-border">
+          <h2 className="font-sora font-bold text-base text-text-primary mb-4">
+            Meer {categorieLabels[artikel.categorie] ?? artikel.categorie}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {gerelateerd.map((a) => (
+              <ArtikelKaart key={a.id} artikel={a} />
+            ))}
+          </div>
+        </aside>
+      )}
     </article>
   );
 }
