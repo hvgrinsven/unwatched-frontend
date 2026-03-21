@@ -11,8 +11,8 @@ function parseerInhoud(inhoud: string): Blok[] {
   // Normaliseer escaped newlines naar echte newlines
   const genormaliseerd = inhoud.replace(/\\n/g, "\n");
 
-  // Splits op [ALINEA] als paragraafscheider
-  const segmenten = genormaliseerd.split(/\[ALINEA\]/);
+  // Splits op dubbele newline of [ALINEA] als paragraafscheider
+  const segmenten = genormaliseerd.split(/\n\n+|\[ALINEA\]/);
 
   const blokken: Blok[] = [];
 
