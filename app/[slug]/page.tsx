@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getArtikel, getAllSlugs, getGerelateerdeArtikelen } from "@/lib/supabase";
 import ArtikelKaart from "@/components/ArtikelKaart";
 import RichTextRenderer from "@/components/RichTextRenderer";
+import StarRating from "@/components/StarRating";
 
 export const revalidate = 60;
 
@@ -95,6 +96,13 @@ export default async function ArtikelPagina({ params }: Props) {
       <h1 className="font-sora font-bold text-2xl sm:text-3xl leading-tight text-text-primary mb-3">
         {artikel.titel}
       </h1>
+
+      {/* Sterrenscore — alleen bij reviews met score */}
+      {artikel.categorie === "review" && artikel.score !== null && (
+        <div className="mb-4">
+          <StarRating score={artikel.score} />
+        </div>
+      )}
 
       {/* Meta */}
       <div className="flex items-center gap-3 text-xs text-text-muted font-sans mb-5">

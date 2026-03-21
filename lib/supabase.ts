@@ -25,6 +25,7 @@ export interface Artikel {
   gepubliceerd: boolean;
   created_at: string;
   published_at: string;
+  score: number | null;
 }
 
 export async function getArtikelen(limit = 20): Promise<Artikel[]> {
