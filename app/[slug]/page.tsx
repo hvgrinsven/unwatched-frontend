@@ -67,8 +67,38 @@ export default async function ArtikelPagina({ params }: Props) {
 
   const thumbnailUrl = artikel.thumbnail_url ?? "/placeholder.jpg";
 
+  const reviewJsonLd =
+    artikel.categorie === "review" && artikel.score !== null
+      ? JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Review",
+          name: artikel.titel,
+          reviewBody: artikel.inhoud.replace(/\[.*?\]/g, "").trim().slice(0, 200),
+          reviewRating: {
+            "@type": "Rating",
+            ratingValue: String(artikel.score),
+            bestRating: "5",
+            worstRating: "1",
+          },
+          author: {
+            "@type": "Organization",
+            name: "UnWatched",
+          },
+          itemReviewed: {
+            "@type": "Movie",
+            name: artikel.titel,
+          },
+        })
+      : null;
+
   return (
     <article className="max-w-2xl mx-auto">
+      {reviewJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: reviewJsonLd }}
+        />
+      )}
       {/* Breadcrumb */}
       <nav className="text-xs font-sans text-text-muted mb-4 flex items-center gap-1.5">
         <Link href="/" className="hover:text-brand transition-colors">
