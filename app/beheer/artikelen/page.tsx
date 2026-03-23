@@ -49,59 +49,35 @@ export default async function BeheerArtikelenPagina() {
         </p>
       )}
 
-      {/* Tabel */}
-      <div className="border border-border rounded overflow-hidden">
-        <table className="w-full text-sm font-sans">
-          <thead>
-            <tr className="bg-gray-50 border-b border-border text-left">
-              <th className="px-4 py-3 font-semibold text-text-primary">Titel</th>
-              <th className="px-4 py-3 font-semibold text-text-primary hidden sm:table-cell">
-                Categorie
-              </th>
-              <th className="px-4 py-3 font-semibold text-text-primary hidden md:table-cell">
-                Datum
-              </th>
-              <th className="px-4 py-3 font-semibold text-text-primary hidden sm:table-cell">
-                Status
-              </th>
-              <th className="px-4 py-3"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {artikelen?.map((artikel) => (
-              <tr key={artikel.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-text-primary max-w-xs truncate">
-                  {artikel.titel}
-                </td>
-                <td className="px-4 py-3 text-text-muted hidden sm:table-cell">
-                  {categorieLabels[artikel.categorie] ?? artikel.categorie}
-                </td>
-                <td className="px-4 py-3 text-text-muted hidden md:table-cell">
-                  {artikel.published_at ? formatDatum(artikel.published_at) : "—"}
-                </td>
-                <td className="px-4 py-3 hidden sm:table-cell">
-                  <span
-                    className={`inline-block text-xs font-semibold px-2 py-0.5 rounded ${
-                      artikel.gepubliceerd
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-text-muted"
-                    }`}
-                  >
-                    {artikel.gepubliceerd ? "Gepubliceerd" : "Concept"}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <Link
-                    href={`/beheer/artikelen/${artikel.id}`}
-                    className="text-brand font-semibold hover:underline"
-                  >
-                    Bewerken
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* Kaartjeslijst */}
+      <div className="flex flex-col gap-3">
+        {artikelen?.map((artikel) => (
+          <div
+            key={artikel.id}
+            className="flex items-center justify-between gap-3 bg-white border border-border rounded p-4"
+          >
+            <div className="min-w-0">
+              <p className="font-sans font-semibold text-sm text-text-primary truncate">
+                {artikel.titel}
+              </p>
+              <p className="font-sans text-xs text-text-muted mt-0.5">
+                {categorieLabels[artikel.categorie] ?? artikel.categorie}
+                {" · "}
+                {artikel.published_at ? formatDatum(artikel.published_at) : "geen datum"}
+                {" · "}
+                <span className={artikel.gepubliceerd ? "text-green-600" : "text-text-muted"}>
+                  {artikel.gepubliceerd ? "Gepubliceerd" : "Concept"}
+                </span>
+              </p>
+            </div>
+            <Link
+              href={`/beheer/artikelen/${artikel.id}`}
+              className="flex-shrink-0 text-sm font-sans font-semibold text-brand hover:underline"
+            >
+              Bewerken
+            </Link>
+          </div>
+        ))}
 
         {(!artikelen || artikelen.length === 0) && !error && (
           <p className="text-center text-text-muted font-sans text-sm py-8">

@@ -137,8 +137,6 @@ export default function ArtikelEditForm({ artikel }: Props) {
           <input
             name="score"
             type="number"
-            min="1"
-            max="5"
             step="0.5"
             value={form.score}
             onChange={handleChange}
