@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import Navigatie from "@/components/Navigatie";
 import Footer from "@/components/Footer";
@@ -31,6 +32,12 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="bf2bd296-8f40-46d3-90d5-efd66e266101"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
