@@ -9,16 +9,16 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          DEFAULT: "#E8001C",
-          dark: "#B8001A",
+          DEFAULT: "#FF9237",
+          dark: "#CC7420",
         },
         bg: "#F5F5F5",
         surface: "#FFFFFF",
         "text-primary": "#0D0D0D",
         "text-muted": "#666666",
         border: "#E0E0E0",
-        "tag-bg": "#FFF0F0",
-        "tag-text": "#E8001C",
+        "tag-bg": "#FFF4EC",
+        "tag-text": "#FF9237",
       },
       fontFamily: {
         sora: ["Sora", "sans-serif"],

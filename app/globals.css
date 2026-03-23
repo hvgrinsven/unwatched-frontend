@@ -5,15 +5,15 @@
 @tailwind utilities;
 
 :root {
-  --color-brand:        #E8001C;
-  --color-brand-dark:   #B8001A;
+  --color-brand:        #FF9237;
+  --color-brand-dark:   #CC7420;
   --color-bg:           #F5F5F5;
   --color-surface:      #FFFFFF;
   --color-text-primary: #0D0D0D;
   --color-text-muted:   #666666;
   --color-border:       #E0E0E0;
-  --color-tag-bg:       #FFF0F0;
-  --color-tag-text:     #E8001C;
+  --color-tag-bg:       #FFF4EC;
+  --color-tag-text:     #FF9237;
 }
 
 body {
