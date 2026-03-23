@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Categorie } from "@/lib/supabase";
 
 const categorieën: { label: string; slug: Categorie }[] = [
@@ -17,8 +18,9 @@ export default function Navigatie() {
         <div className="flex items-center h-12 px-4">
           <Link
             href="/"
-            className="font-sora font-bold text-lg text-brand tracking-tight"
+            className="flex items-center gap-2 font-sora font-bold text-lg text-brand tracking-tight"
           >
+            <Image src="/favicon.png" alt="UnWatched logo" width={24} height={24} />
             UnWatched
             <span className="text-text-primary font-normal"> films & series</span>
           </Link>
