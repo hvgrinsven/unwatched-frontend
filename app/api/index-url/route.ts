@@ -21,7 +21,9 @@ export async function POST(req: NextRequest) {
   }
 
   // Bouw Google service account credentials op uit env vars
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY
+    ?.replace(/\\n/g, "\n")
+    .replace(/\r/g, "");
   if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || !privateKey) {
     console.error("Google service account credentials ontbreken");
     return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
