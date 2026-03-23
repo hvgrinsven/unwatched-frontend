@@ -17,27 +17,11 @@ export default function Footer() {
           — Film &amp; Series Nieuws
         </p>
         <nav className="flex gap-4">
-          <Link href="/" className="hover:text-brand transition-colors">
-            Home
-          </Link>
-          <Link
-            href="/categorie/film"
-            className="hover:text-brand transition-colors"
-          >
-            Film
-          </Link>
-          <Link
-            href="/categorie/serie"
-            className="hover:text-brand transition-colors"
-          >
-            Series
-          </Link>
-          <Link
-            href="/categorie/streaming"
-            className="hover:text-brand transition-colors"
-          >
-            Streaming
-          </Link>
+          <Link href="/categorie/nieuws" className="hover:text-brand transition-colors">Nieuws</Link>
+          <Link href="/categorie/film" className="hover:text-brand transition-colors">Films</Link>
+          <Link href="/categorie/serie" className="hover:text-brand transition-colors">Series</Link>
+          <Link href="/categorie/review" className="hover:text-brand transition-colors">Reviews</Link>
+          <Link href="/categorie/streaming" className="hover:text-brand transition-colors">Streaming</Link>
         </nav>
       </div>
     </footer>

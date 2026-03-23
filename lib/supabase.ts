@@ -26,6 +26,7 @@ export interface Artikel {
   created_at: string;
   published_at: string;
   score: number | null;
+  trailer: string | null;
 }
 
 export async function getArtikelen(limit = 20): Promise<Artikel[]> {

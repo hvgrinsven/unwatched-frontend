@@ -2,12 +2,11 @@ import Link from "next/link";
 import type { Categorie } from "@/lib/supabase";
 
 const categorieën: { label: string; slug: Categorie }[] = [
-  { label: "Film", slug: "film" },
-  { label: "Series", slug: "serie" },
-  { label: "Streaming", slug: "streaming" },
-  { label: "Trailers", slug: "trailer" },
-  { label: "Reviews", slug: "review" },
   { label: "Nieuws", slug: "nieuws" },
+  { label: "Films", slug: "film" },
+  { label: "Series", slug: "serie" },
+  { label: "Reviews", slug: "review" },
+  { label: "Streaming", slug: "streaming" },
 ];
 
 export default function Navigatie() {

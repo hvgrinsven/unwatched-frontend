@@ -47,6 +47,16 @@ const categorieLabels: Record<string, string> = {
   nieuws: "Nieuws",
 };
 
+function youtubeEmbedUrl(url: string): string | null {
+  // youtu.be/ID
+  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`;
+  // youtube.com/watch?v=ID
+  const longMatch = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+  if (longMatch) return `https://www.youtube.com/embed/${longMatch[1]}`;
+  return null;
+}
+
 function formatDatum(iso: string): string {
   return new Date(iso).toLocaleDateString("nl-NL", {
     weekday: "long",
@@ -177,6 +187,26 @@ export default async function ArtikelPagina({ params }: Props) {
       <div className="font-serif text-text-primary space-y-4 leading-relaxed">
         <RichTextRenderer inhoud={artikel.inhoud} />
       </div>
+
+      {/* Trailer embed */}
+      {artikel.trailer && (() => {
+        const embedUrl = youtubeEmbedUrl(artikel.trailer);
+        return embedUrl ? (
+          <div className="mt-8">
+            <h2 className="font-sora font-bold text-lg text-text-primary mb-3">Trailer</h2>
+            <div className="relative aspect-video w-full rounded overflow-hidden">
+              <iframe
+                src={embedUrl}
+                title={`Trailer — ${artikel.titel}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
+          </div>
+        ) : null;
+      })()}
+
       {/* Gerelateerde artikelen */}
       {gerelateerd.length > 0 && (
         <aside className="mt-10 pt-6 border-t border-border">
