@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import type { Categorie } from "@/lib/supabase";
 
 const categorieën: { label: string; slug: Categorie }[] = [
@@ -11,6 +14,8 @@ const categorieën: { label: string; slug: Categorie }[] = [
 ];
 
 export default function Navigatie() {
+  const pathname = usePathname();
+
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border">
       <div className="max-w-site mx-auto">
@@ -31,15 +36,22 @@ export default function Navigatie() {
           className="flex items-center overflow-x-auto border-t border-border px-4 gap-0"
           style={{ scrollbarWidth: "none" }}
         >
-          {categorieën.map(({ label, slug }) => (
-            <Link
-              key={slug}
-              href={`/categorie/${slug}`}
-              className="flex-shrink-0 px-3 py-2 text-xs font-semibold font-sans text-text-muted hover:text-brand transition-colors border-b-2 border-transparent hover:border-brand whitespace-nowrap"
-            >
-              {label}
-            </Link>
-          ))}
+          {categorieën.map(({ label, slug }) => {
+            const actief = pathname === `/categorie/${slug}`;
+            return (
+              <Link
+                key={slug}
+                href={`/categorie/${slug}`}
+                className={`flex-shrink-0 px-3 py-2 text-xs font-sans transition-colors border-b-2 whitespace-nowrap ${
+                  actief
+                    ? "font-bold text-brand border-brand"
+                    : "font-semibold text-text-muted border-transparent hover:text-brand hover:border-brand"
+                }`}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>

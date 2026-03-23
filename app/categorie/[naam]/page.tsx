@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { Categorie } from "@/lib/supabase";
 import { getArtikelenByCategorie } from "@/lib/supabase";
-import ArtikelGrid from "@/components/ArtikelGrid";
+import HeroArtikel from "@/components/HeroArtikel";
+import ArtikelRij from "@/components/ArtikelRij";
+import ArtikelKaart from "@/components/ArtikelKaart";
 
 export const revalidate = 60;
 
@@ -51,33 +53,44 @@ export default async function CategoriePagina({ params }: Props) {
 
   const categorie = params.naam as Categorie;
   const artikelen = await getArtikelenByCategorie(categorie, 20);
-  const label = categorieLabels[categorie];
+
+  if (artikelen.length === 0) {
+    return (
+      <div className="py-16 text-center">
+        <p className="text-text-muted font-sans text-sm">
+          Nog geen artikelen in deze categorie.
+        </p>
+      </div>
+    );
+  }
+
+  const [hero, ...rest] = artikelen;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="border-b border-border pb-3">
-        <span className="text-xs font-sans font-semibold uppercase tracking-wide text-brand">
-          Categorie
-        </span>
-        <h1 className="font-sora font-bold text-2xl text-text-primary mt-0.5">
-          {label}
-        </h1>
-        {artikelen.length > 0 && (
-          <p className="text-sm text-text-muted font-sans mt-1">
-            {artikelen.length} artikel{artikelen.length !== 1 ? "en" : ""}{" "}
-            gevonden
-          </p>
-        )}
+    <div>
+      {/* Hero — edge-to-edge op mobiel */}
+      <div className="-mx-4 -mt-6 lg:mx-0 lg:mt-0 lg:rounded lg:overflow-hidden">
+        <HeroArtikel artikel={hero} />
       </div>
 
-      {artikelen.length === 0 ? (
-        <div className="py-12 text-center">
-          <p className="text-text-muted font-sans text-sm">
-            Nog geen artikelen in de categorie &ldquo;{label}&rdquo;.
-          </p>
+      {/* Mobiele artikellijst */}
+      {rest.length > 0 && (
+        <div className="lg:hidden mt-1 divide-y divide-border">
+          {rest.map((artikel) => (
+            <ArtikelRij key={artikel.id} artikel={artikel} />
+          ))}
         </div>
-      ) : (
-        <ArtikelGrid artikels={artikelen} />
+      )}
+
+      {/* Desktop grid */}
+      {rest.length > 0 && (
+        <div className="hidden lg:block mt-6">
+          <div className="grid grid-cols-3 gap-4">
+            {rest.map((artikel) => (
+              <ArtikelKaart key={artikel.id} artikel={artikel} />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
