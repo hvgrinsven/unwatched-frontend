@@ -1,6 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Artikel } from "@/lib/supabase";
+import StarRating from "@/components/StarRating";
+
+const categorieLabels: Record<string, string> = {
+  film: "Film",
+  serie: "Series",
+  streaming: "Streaming",
+  trailer: "Trailer",
+  review: "Review",
+  nieuws: "Nieuws",
+};
 
 function formatDatum(iso: string): string {
   return new Date(iso).toLocaleDateString("nl-NL", {
@@ -39,9 +49,18 @@ export default function ArtikelRij({ artikel }: Props) {
         <h3 className="font-sora font-semibold text-sm leading-snug text-text-primary group-hover:text-brand transition-colors line-clamp-3">
           {artikel.titel}
         </h3>
+        <div className="mt-1">
+          {artikel.categorie === "review" && artikel.score !== null ? (
+            <StarRating score={artikel.score} />
+          ) : (
+            <span className="text-xs font-semibold font-sans uppercase tracking-wide text-tag-text">
+              {categorieLabels[artikel.categorie] ?? artikel.categorie}
+            </span>
+          )}
+        </div>
         <time
           dateTime={artikel.published_at}
-          className="block mt-1.5 text-xs text-text-muted font-sans"
+          className="block mt-1 text-xs text-text-muted font-sans"
         >
           {formatDatum(artikel.published_at)}
         </time>
