@@ -6,6 +6,7 @@ import { getArtikel, getAllSlugs, getGerelateerdeArtikelen } from "@/lib/supabas
 import ArtikelKaart from "@/components/ArtikelKaart";
 import RichTextRenderer from "@/components/RichTextRenderer";
 import StarRating from "@/components/StarRating";
+import ShareButtons from "@/components/ShareButtons";
 
 export const revalidate = 60;
 
@@ -162,6 +163,11 @@ export default async function ArtikelPagina({ params }: Props) {
             </a>
           </>
         )}
+      </div>
+
+      {/* Social sharing */}
+      <div className="mb-5">
+        <ShareButtons slug={artikel.slug} titel={artikel.titel} />
       </div>
 
       {/* Thumbnail */}

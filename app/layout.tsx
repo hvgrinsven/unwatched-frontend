@@ -4,18 +4,24 @@ import "./globals.css";
 import Navigatie from "@/components/Navigatie";
 import Footer from "@/components/Footer";
 
+const description =
+  "Het laatste film- en series nieuws + wat je écht moet kijken. Ontdek trending titels en aanbevelingen van vrienden op UnWatched.";
+
 export const metadata: Metadata = {
   title: {
-    default: "UnWatched Nieuws — Film & Series",
-    template: "%s | UnWatched Nieuws",
+    default: "Film & Series Nieuws + Tips | UnWatched",
+    template: "%s | UnWatched",
   },
-  description:
-    "Het laatste nieuws over film, series en streaming. Overzichtelijk, snel en nieuwsgedreven.",
+  description,
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://unwatched.nl"
   ),
+  openGraph: {
+    description,
+  },
   icons: {
     icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 
