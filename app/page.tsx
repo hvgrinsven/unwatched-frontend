@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { getArtikelen } from "@/lib/supabase";
 import HeroArtikel from "@/components/HeroArtikel";
 import ArtikelRij from "@/components/ArtikelRij";
@@ -6,11 +5,6 @@ import ArtikelKaart from "@/components/ArtikelKaart";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "UnWatched Nieuws — Film & Series",
-  description:
-    "Het laatste nieuws over film, series en streaming. Overzichtelijk, snel en nieuwsgedreven.",
-};
 
 export default async function HomePage() {
   const artikelen = await getArtikelen(20);

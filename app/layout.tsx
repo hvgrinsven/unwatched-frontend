@@ -4,7 +4,7 @@ import "./globals.css";
 import Navigatie from "@/components/Navigatie";
 import Footer from "@/components/Footer";
 
-const description =
+const siteDescription =
   "Het laatste film- en series nieuws + wat je écht moet kijken. Ontdek trending titels en aanbevelingen van vrienden op UnWatched.";
 
 export const metadata: Metadata = {
@@ -12,12 +12,12 @@ export const metadata: Metadata = {
     default: "Film & Series Nieuws + Tips | UnWatched",
     template: "%s | UnWatched",
   },
-  description,
+  description: siteDescription,
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://unwatched.nl"
   ),
   openGraph: {
-    description,
+    description: siteDescription,
   },
   icons: {
     icon: "/favicon.png",
