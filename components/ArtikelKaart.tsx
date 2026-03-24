@@ -1,6 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Artikel } from "@/lib/supabase";
+import StarRating from "@/components/StarRating";
+
+const categorieLabels: Record<string, string> = {
+  film: "Film",
+  serie: "Series",
+  streaming: "Streaming",
+  trailer: "Trailer",
+  review: "Review",
+  nieuws: "Nieuws",
+};
 
 function formatDatum(iso: string): string {
   return new Date(iso).toLocaleDateString("nl-NL", {
@@ -34,11 +44,18 @@ export default function ArtikelKaart({ artikel }: Props) {
         />
       </div>
 
-      {/* Titel + datum */}
+      {/* Titel + categorie + datum */}
       <div className="p-3 flex flex-col gap-1.5 flex-1">
         <h3 className="font-sora font-semibold text-sm leading-snug text-text-primary group-hover:text-brand transition-colors line-clamp-3">
           {artikel.titel}
         </h3>
+        {artikel.categorie === "review" && artikel.score !== null ? (
+          <StarRating score={artikel.score} />
+        ) : (
+          <span className="self-start text-xs font-semibold font-sans uppercase tracking-wide px-2 py-0.5 rounded bg-tag-bg text-tag-text">
+            {categorieLabels[artikel.categorie] ?? artikel.categorie}
+          </span>
+        )}
         <time
           dateTime={artikel.published_at}
           className="text-xs text-text-muted font-sans mt-auto pt-1"

@@ -1,13 +1,12 @@
 import { getArtikelen } from "@/lib/supabase";
 import HeroArtikel from "@/components/HeroArtikel";
-import ArtikelRij from "@/components/ArtikelRij";
-import ArtikelKaart from "@/components/ArtikelKaart";
+import LoadMoreArtikelen from "@/components/LoadMoreArtikelen";
 
 export const revalidate = 60;
 
-
 export default async function HomePage() {
-  const artikelen = await getArtikelen(20);
+  // 1 hero + 15 initiële rij-/gridartikelen = 16 totaal
+  const artikelen = await getArtikelen(16);
 
   if (artikelen.length === 0) {
     return (
@@ -31,25 +30,8 @@ export default async function HomePage() {
         <HeroArtikel artikel={hero} />
       </div>
 
-      {/* Mobiele artikellijst */}
-      {rest.length > 0 && (
-        <div className="lg:hidden mt-1 divide-y divide-border">
-          {rest.map((artikel) => (
-            <ArtikelRij key={artikel.id} artikel={artikel} />
-          ))}
-        </div>
-      )}
-
-      {/* Desktop grid */}
-      {rest.length > 0 && (
-        <div className="hidden lg:block mt-6">
-          <div className="grid grid-cols-3 gap-4">
-            {rest.map((artikel) => (
-              <ArtikelKaart key={artikel.id} artikel={artikel} />
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Rest + laad meer (client component) */}
+      <LoadMoreArtikelen initialArtikelen={rest} initialOffset={16} />
     </div>
   );
 }
