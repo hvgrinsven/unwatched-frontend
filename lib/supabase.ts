@@ -104,10 +104,10 @@ export async function getGerelateerdeArtikelen(
   return data ?? [];
 }
 
-export async function getAllSlugs(): Promise<string[]> {
+export async function getAllSlugs(): Promise<{ slug: string; created_at: string }[]> {
   const { data, error } = await supabase
     .from("artikelen")
-    .select("slug")
+    .select("slug, created_at")
     .eq("gepubliceerd", true);
 
   if (error) {
@@ -115,5 +115,5 @@ export async function getAllSlugs(): Promise<string[]> {
     return [];
   }
 
-  return data?.map((a) => a.slug).filter(Boolean) ?? [];
+  return data?.filter((a) => a.slug) ?? [];
 }

@@ -6,26 +6,19 @@ const BASE_URL = "https://unwatched.nl";
 const CATEGORIEËN = ["nieuws", "film", "serie", "review", "streaming"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const slugs = await getAllSlugs();
+  const artikelen = await getAllSlugs();
 
-  const artikelEntries: MetadataRoute.Sitemap = slugs.map((slug) => ({
+  const artikelEntries: MetadataRoute.Sitemap = artikelen.map(({ slug, created_at }) => ({
     url: `${BASE_URL}/${slug}`,
-    changeFrequency: "weekly",
-    priority: 0.7,
+    lastmod: new Date(created_at).toISOString(),
   }));
 
   const categorieEntries: MetadataRoute.Sitemap = CATEGORIEËN.map((cat) => ({
     url: `${BASE_URL}/categorie/${cat}`,
-    changeFrequency: "daily",
-    priority: 0.6,
   }));
 
   return [
-    {
-      url: BASE_URL,
-      changeFrequency: "daily",
-      priority: 1,
-    },
+    { url: BASE_URL },
     ...categorieEntries,
     ...artikelEntries,
   ];

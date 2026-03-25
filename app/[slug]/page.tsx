@@ -15,8 +15,8 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const slugs = await getAllSlugs();
-  return slugs.filter(Boolean).map((slug) => ({ slug }));
+  const artikelen = await getAllSlugs();
+  return artikelen.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

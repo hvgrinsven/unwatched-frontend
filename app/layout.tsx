@@ -23,6 +23,11 @@ export const metadata: Metadata = {
     icon: "/favicon.png",
     apple: "/apple-touch-icon.png",
   },
+  alternates: {
+    types: {
+      "application/rss+xml": "https://unwatched.nl/feed.xml",
+    },
+  },
 };
 
 export default function RootLayout({
