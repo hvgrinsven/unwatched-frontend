@@ -194,6 +194,21 @@ export default async function ArtikelPagina({ params }: Props) {
         <RichTextRenderer inhoud={artikel.inhoud} />
       </div>
 
+      {/* Scoreblok — alleen bij reviews met score > 0 */}
+      {artikel.categorie === "review" && artikel.score !== null && artikel.score !== 0 && (
+        <div className="mt-8 flex items-center gap-4 border border-brand/30 bg-orange-50 rounded-lg px-5 py-4">
+          <div>
+            <p className="text-xs font-sans font-semibold uppercase tracking-wide text-brand mb-1">
+              Onze score
+            </p>
+            <StarRating score={artikel.score} />
+          </div>
+          <span className="ml-auto font-sora font-bold text-2xl text-brand">
+            {artikel.score}/5
+          </span>
+        </div>
+      )}
+
       {/* Trailer embed */}
       {artikel.trailer && (() => {
         const embedUrl = youtubeEmbedUrl(artikel.trailer);
