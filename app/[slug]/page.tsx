@@ -146,10 +146,12 @@ export default async function ArtikelPagina({ params }: Props) {
       )}
 
       {/* Meta */}
-      <div className="flex items-center gap-3 text-xs text-text-muted font-sans mb-5">
+      <div className="flex items-center flex-wrap gap-3 text-xs text-text-muted font-sans mb-5">
         <time dateTime={artikel.published_at}>
           {formatDatum(artikel.published_at)}
         </time>
+        <span>|</span>
+        <span>Door <strong className="text-text-primary">Kelvin Gryshavenn</strong></span>
         {artikel.bron_url && (
           <>
             <span>·</span>
@@ -165,14 +167,9 @@ export default async function ArtikelPagina({ params }: Props) {
         )}
       </div>
 
-      {/* Social sharing */}
-      <div className="mb-5">
-        <ShareButtons slug={artikel.slug} titel={artikel.titel} />
-      </div>
-
       {/* Thumbnail */}
       {artikel.thumbnail_url && (
-        <div className="relative aspect-video w-full rounded overflow-hidden mb-6">
+        <div className="relative aspect-video w-full rounded overflow-hidden mb-4">
           <Image
             src={thumbnailUrl}
             alt={artikel.titel}
@@ -183,6 +180,11 @@ export default async function ArtikelPagina({ params }: Props) {
           />
         </div>
       )}
+
+      {/* Social sharing */}
+      <div className="mb-6">
+        <ShareButtons slug={artikel.slug} titel={artikel.titel} />
+      </div>
 
       {/* Samenvatting */}
       <p className="font-sans text-base font-medium text-text-primary bg-surface border-l-4 border-brand pl-4 py-2 mb-6 rounded-r">
