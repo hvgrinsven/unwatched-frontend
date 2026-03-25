@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const artikelEntries: MetadataRoute.Sitemap = artikelen.map(({ slug, created_at }) => ({
     url: `${BASE_URL}/${slug}`,
-    lastmod: new Date(created_at).toISOString(),
+    ...(created_at ? { lastmod: new Date(created_at).toISOString() } : {}),
   }));
 
   const categorieEntries: MetadataRoute.Sitemap = CATEGORIEËN.map((cat) => ({
