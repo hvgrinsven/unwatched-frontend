@@ -2,33 +2,29 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Artikel } from "@/lib/supabase";
 import ThumbnailUpload from "@/components/beheer/ThumbnailUpload";
 
 const categorieOpties = ["film", "serie", "streaming", "trailer", "review", "nieuws"] as const;
 const itemTypeOpties = ["film", "serie", "overig"] as const;
 
-interface Props {
-  artikel: Artikel;
-}
+const leegForm = {
+  titel: "",
+  samenvatting: "",
+  inhoud: "",
+  categorie: "nieuws" as string,
+  slug: "",
+  gepubliceerd: false,
+  score: "",
+  trailer: "",
+  item_type: "overig" as string,
+  thumbnail_url: "",
+};
 
-export default function ArtikelEditForm({ artikel }: Props) {
+export default function NieuwArtikelForm() {
   const router = useRouter();
   const [laden, setLaden] = useState(false);
   const [melding, setMelding] = useState<{ type: "ok" | "fout"; tekst: string } | null>(null);
-
-  const [form, setForm] = useState({
-    titel: artikel.titel,
-    samenvatting: artikel.samenvatting,
-    inhoud: artikel.inhoud,
-    categorie: artikel.categorie,
-    slug: artikel.slug,
-    gepubliceerd: artikel.gepubliceerd,
-    score: artikel.score?.toString() ?? "",
-    trailer: artikel.trailer ?? "",
-    item_type: artikel.item_type ?? "overig",
-    thumbnail_url: artikel.thumbnail_url ?? "",
-  });
+  const [form, setForm] = useState(leegForm);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -38,6 +34,18 @@ export default function ArtikelEditForm({ artikel }: Props) {
       ...prev,
       [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
+  }
+
+  // Genereer slug automatisch vanuit titel als slug nog leeg is
+  function handleTitelBlur() {
+    if (!form.slug && form.titel) {
+      const slug = form.titel
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-");
+      setForm((prev) => ({ ...prev, slug }));
+    }
   }
 
   async function handleOpslaan(e: React.FormEvent) {
@@ -58,45 +66,28 @@ export default function ArtikelEditForm({ artikel }: Props) {
       thumbnail_url: form.thumbnail_url || null,
     };
 
-    const res = await fetch(`/api/beheer/artikelen/${artikel.id}`, {
-      method: "PATCH",
+    const res = await fetch("/api/beheer/artikelen", {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
     if (res.ok) {
-      setMelding({ type: "ok", tekst: "Opgeslagen!" });
+      const data = (await res.json()) as { id: number };
+      router.push(`/beheer/artikelen/${data.id}`);
     } else {
       const data = (await res.json()) as { error?: string };
-      setMelding({ type: "fout", tekst: data.error ?? "Opslaan mislukt" });
-    }
-    setLaden(false);
-  }
-
-  async function handleVerwijderen() {
-    if (!window.confirm(`Artikel "${artikel.titel}" definitief verwijderen?`)) return;
-
-    setLaden(true);
-    const res = await fetch(`/api/beheer/artikelen/${artikel.id}`, { method: "DELETE" });
-
-    if (res.ok) {
-      router.push("/beheer/artikelen");
-    } else {
-      const data = (await res.json()) as { error?: string };
-      setMelding({ type: "fout", tekst: data.error ?? "Verwijderen mislukt" });
+      setMelding({ type: "fout", tekst: data.error ?? "Aanmaken mislukt" });
       setLaden(false);
     }
   }
 
   return (
     <form onSubmit={handleOpslaan} className="flex flex-col gap-5">
-      {/* Melding */}
       {melding && (
         <p
           className={`text-sm font-sans font-medium px-3 py-2 rounded ${
-            melding.type === "ok"
-              ? "bg-green-50 text-green-700"
-              : "bg-red-50 text-brand"
+            melding.type === "ok" ? "bg-green-50 text-green-700" : "bg-red-50 text-brand"
           }`}
         >
           {melding.tekst}
@@ -104,7 +95,13 @@ export default function ArtikelEditForm({ artikel }: Props) {
       )}
 
       <Field label="Titel">
-        <input name="titel" value={form.titel} onChange={handleChange} required />
+        <input
+          name="titel"
+          value={form.titel}
+          onChange={handleChange}
+          onBlur={handleTitelBlur}
+          required
+        />
       </Field>
 
       <Field label="Samenvatting">
@@ -141,6 +138,8 @@ export default function ArtikelEditForm({ artikel }: Props) {
             name="score"
             type="number"
             step="0.5"
+            min="1"
+            max="5"
             value={form.score}
             onChange={handleChange}
             placeholder="bijv. 3.5"
@@ -161,16 +160,21 @@ export default function ArtikelEditForm({ artikel }: Props) {
       {/* Thumbnail */}
       <div className="flex flex-col gap-1">
         <label className="text-sm font-sans font-medium text-text-primary">Thumbnail</label>
-        <ThumbnailUpload
-          slug={form.slug}
-          currentUrl={form.thumbnail_url}
-          onUpload={(url) => setForm((prev) => ({ ...prev, thumbnail_url: url }))}
-        />
+        {!form.slug && (
+          <p className="text-xs text-text-muted font-sans">Vul eerst een slug in om een afbeelding te uploaden.</p>
+        )}
+        {form.slug && (
+          <ThumbnailUpload
+            slug={form.slug}
+            currentUrl={form.thumbnail_url}
+            onUpload={(url) => setForm((prev) => ({ ...prev, thumbnail_url: url }))}
+          />
+        )}
         <input
           name="thumbnail_url"
           value={form.thumbnail_url}
           onChange={handleChange}
-          placeholder="https://..."
+          placeholder="https://... (of upload hierboven)"
           className="w-full border border-border rounded px-3 py-2 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-brand mt-1"
         />
       </div>
@@ -186,38 +190,30 @@ export default function ArtikelEditForm({ artikel }: Props) {
         Gepubliceerd
       </label>
 
-      {/* Knoppen */}
       <div className="flex gap-3 pt-2">
         <button
           type="submit"
           disabled={laden}
           className="bg-brand text-white font-sans font-semibold text-sm rounded px-5 py-2 hover:bg-brand-dark transition-colors disabled:opacity-50"
         >
-          {laden ? "Bezig…" : "Opslaan"}
+          {laden ? "Bezig…" : "Artikel aanmaken"}
         </button>
         <button
           type="button"
-          onClick={handleVerwijderen}
-          disabled={laden}
-          className="border border-red-300 text-red-600 font-sans font-semibold text-sm rounded px-5 py-2 hover:bg-red-50 transition-colors disabled:opacity-50"
+          onClick={() => router.push("/beheer/artikelen")}
+          className="border border-border text-text-muted font-sans text-sm rounded px-5 py-2 hover:text-text-primary transition-colors"
         >
-          Verwijderen
+          Annuleren
         </button>
       </div>
     </form>
   );
 }
 
-// Herbruikbaar veld-wrapper
 function Field({ label, children }: { label: string; children: React.ReactElement }) {
   const inputClass =
     "w-full border border-border rounded px-3 py-2 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-brand";
-
-  const child = {
-    ...children,
-    props: { ...children.props, className: inputClass },
-  };
-
+  const child = { ...children, props: { ...children.props, className: inputClass } };
   return (
     <div className="flex flex-col gap-1">
       <label className="text-sm font-sans font-medium text-text-primary">{label}</label>

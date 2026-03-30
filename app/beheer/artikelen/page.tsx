@@ -35,12 +35,20 @@ export default async function BeheerArtikelenPagina() {
         <h1 className="font-sora font-bold text-2xl text-text-primary">
           Artikelen beheer
         </h1>
-        <a
-          href="/api/beheer/logout"
-          className="text-sm font-sans text-text-muted hover:text-brand transition-colors"
-        >
-          Uitloggen
-        </a>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/beheer/artikelen/nieuw"
+            className="bg-brand text-white font-sans font-semibold text-sm rounded px-4 py-2 hover:bg-brand-dark transition-colors"
+          >
+            + Nieuw artikel
+          </Link>
+          <a
+            href="/api/beheer/logout"
+            className="text-sm font-sans text-text-muted hover:text-brand transition-colors"
+          >
+            Uitloggen
+          </a>
+        </div>
       </div>
 
       {error && (
