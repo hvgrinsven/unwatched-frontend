@@ -24,7 +24,8 @@ export async function POST(req: NextRequest) {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const bestandsnaam = `${slug}.jpg`;
+  const filenameOverride = formData.get("filename") as string | null;
+  const bestandsnaam = filenameOverride ?? `${slug}.jpg`;
 
   const { error } = await supabaseAdmin.storage
     .from("thumbnails")

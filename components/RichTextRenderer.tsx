@@ -5,7 +5,8 @@ interface Props {
 type Blok =
   | { type: "h2"; tekst: string }
   | { type: "p"; tekst: string }
-  | { type: "faq"; vraag: string; antwoord: string };
+  | { type: "faq"; vraag: string; antwoord: string }
+  | { type: "img"; url: string };
 
 function parseerInhoud(inhoud: string): Blok[] {
   // Normaliseer escaped newlines naar echte newlines
@@ -24,6 +25,13 @@ function parseerInhoud(inhoud: string): Blok[] {
     const h2Match = tekst.match(/^\[H2\]([\s\S]*?)\[\/H2\]$/);
     if (h2Match) {
       blokken.push({ type: "h2", tekst: h2Match[1].trim() });
+      continue;
+    }
+
+    // [IMG]url[/IMG]
+    const imgMatch = tekst.match(/^\[IMG\]([\s\S]*?)\[\/IMG\]$/);
+    if (imgMatch) {
+      blokken.push({ type: "img", url: imgMatch[1].trim() });
       continue;
     }
 
@@ -66,6 +74,18 @@ export default function RichTextRenderer({ inhoud }: Props) {
             >
               {blok.tekst}
             </h2>
+          );
+        }
+
+        if (blok.type === "img") {
+          return (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={i}
+              src={blok.url}
+              alt=""
+              className="w-full rounded object-contain"
+            />
           );
         }
 

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import ThumbnailUpload from "@/components/beheer/ThumbnailUpload";
+import MultiImageUpload from "@/components/beheer/MultiImageUpload";
 
 const categorieOpties = ["film", "serie", "streaming", "trailer", "review", "nieuws"] as const;
 const itemTypeOpties = ["film", "serie", "overig"] as const;
@@ -22,6 +23,7 @@ const leegForm = {
 
 export default function NieuwArtikelForm() {
   const router = useRouter();
+  const inhoudRef = useRef<HTMLTextAreaElement>(null);
   const [laden, setLaden] = useState(false);
   const [melding, setMelding] = useState<{ type: "ok" | "fout"; tekst: string } | null>(null);
   const [form, setForm] = useState(leegForm);
@@ -46,6 +48,19 @@ export default function NieuwArtikelForm() {
         .replace(/\s+/g, "-");
       setForm((prev) => ({ ...prev, slug }));
     }
+  }
+
+  function handleInsert(tag: string) {
+    const el = inhoudRef.current;
+    if (!el) return;
+    const start = el.selectionStart ?? form.inhoud.length;
+    const end = el.selectionEnd ?? form.inhoud.length;
+    const newValue = form.inhoud.slice(0, start) + "\n\n" + tag + "\n\n" + form.inhoud.slice(end);
+    setForm((prev) => ({ ...prev, inhoud: newValue }));
+    requestAnimationFrame(() => {
+      el.selectionStart = el.selectionEnd = start + tag.length + 4;
+      el.focus();
+    });
   }
 
   async function handleOpslaan(e: React.FormEvent) {
@@ -108,9 +123,20 @@ export default function NieuwArtikelForm() {
         <textarea name="samenvatting" value={form.samenvatting} onChange={handleChange} rows={3} required />
       </Field>
 
-      <Field label="Inhoud">
-        <textarea name="inhoud" value={form.inhoud} onChange={handleChange} rows={12} required />
-      </Field>
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-sans font-medium text-text-primary">Inhoud</label>
+        <textarea
+          ref={inhoudRef}
+          name="inhoud"
+          value={form.inhoud}
+          onChange={handleChange}
+          rows={12}
+          required
+          className="w-full border border-border rounded px-3 py-2 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-brand"
+        />
+      </div>
+
+      <MultiImageUpload slug={form.slug} onInsert={handleInsert} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <Field label="Categorie">
