@@ -12,12 +12,10 @@ export default function Inhoudsopgave({ headings }: Props) {
       <p className="font-sora font-semibold text-sm text-text-primary mb-2">
         Inhoudsopgave
       </p>
-      <ol className="flex flex-col gap-1">
-        {headings.map((h, i) => (
+      <ul className="flex flex-col gap-1">
+        {headings.map((h) => (
           <li key={h.anchor} className="flex items-baseline gap-2">
-            <span className="text-xs font-sans text-brand font-semibold w-4 shrink-0">
-              {i + 1}.
-            </span>
+            <span className="shrink-0">🔸</span>
             <a
               href={`#${h.anchor}`}
               className="text-sm font-sans text-text-primary hover:text-brand transition-colors"
@@ -26,7 +24,7 @@ export default function Inhoudsopgave({ headings }: Props) {
             </a>
           </li>
         ))}
-      </ol>
+      </ul>
     </nav>
   );
 }
