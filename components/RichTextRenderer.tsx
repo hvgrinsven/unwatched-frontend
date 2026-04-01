@@ -1,3 +1,5 @@
+import { tekstNaarAnchor } from "@/lib/extract-headings";
+
 interface Props {
   inhoud: string;
 }
@@ -70,6 +72,7 @@ export default function RichTextRenderer({ inhoud }: Props) {
           return (
             <h2
               key={i}
+              id={tekstNaarAnchor(blok.tekst)}
               className="font-sora font-bold text-xl text-text-primary mt-6 mb-2"
             >
               {blok.tekst}

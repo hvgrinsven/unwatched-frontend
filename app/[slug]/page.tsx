@@ -6,6 +6,8 @@ import { getArtikel, getAllSlugs, getGerelateerdeArtikelen } from "@/lib/supabas
 import ArtikelKaart from "@/components/ArtikelKaart";
 import RichTextRenderer from "@/components/RichTextRenderer";
 import StarRating from "@/components/StarRating";
+import Inhoudsopgave from "@/components/Inhoudsopgave";
+import { extractHeadings } from "@/lib/extract-headings";
 import ShareButtons from "@/components/ShareButtons";
 
 export const revalidate = 60;
@@ -190,6 +192,9 @@ export default async function ArtikelPagina({ params }: Props) {
       <p className="font-sans text-base font-medium text-text-primary bg-surface border-l-4 border-brand pl-4 py-2 mb-6 rounded-r">
         {artikel.samenvatting}
       </p>
+
+      {/* Inhoudsopgave */}
+      <Inhoudsopgave headings={extractHeadings(artikel.inhoud)} />
 
       {/* Inhoud */}
       <div className="font-serif text-text-primary space-y-4 leading-relaxed">
