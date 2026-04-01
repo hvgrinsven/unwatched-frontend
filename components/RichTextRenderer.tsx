@@ -64,7 +64,7 @@ export default function RichTextRenderer({ inhoud }: Props) {
   const blokken = parseerInhoud(inhoud);
 
   return (
-    <div className="space-y-4">
+    <div className="artikel-inhoud space-y-4">
       {blokken.map((blok, i) => {
         if (blok.type === "h2") {
           return (
@@ -103,9 +103,11 @@ export default function RichTextRenderer({ inhoud }: Props) {
         }
 
         return (
-          <p key={i} className="text-base leading-relaxed text-text-primary">
-            {blok.tekst}
-          </p>
+          <p
+            key={i}
+            className="text-base leading-relaxed text-text-primary"
+            dangerouslySetInnerHTML={{ __html: blok.tekst }}
+          />
         );
       })}
     </div>

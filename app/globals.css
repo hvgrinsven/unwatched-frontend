@@ -21,3 +21,8 @@ body {
   color: var(--color-text-primary);
   font-family: "DM Sans", sans-serif;
 }
+
+.artikel-inhoud a {
+  color: #FF9237;
+  text-decoration: underline;
+}
