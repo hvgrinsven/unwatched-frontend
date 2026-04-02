@@ -53,48 +53,20 @@ export default function ReviewsOverzicht({ artikelen, genres }: Props) {
 
   return (
     <div>
-      {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-5">
-        {/* Sorteren */}
-        <div className="flex items-center gap-2 min-w-0">
-          <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
-            Sorteren
-          </label>
-          <select
-            value={sorteer}
-            onChange={(e) => setSorteer(e.target.value as SorteerOptie)}
-            className="flex-1 border border-border rounded px-2 py-1.5 text-sm font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
-          >
-            {(Object.keys(SORTEER_LABELS) as SorteerOptie[]).map((opt) => (
-              <option key={opt} value={opt}>{SORTEER_LABELS[opt]}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Genre filter */}
-        {genres.length > 0 && (
-          <div className="flex items-center gap-2 min-w-0">
-            <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
-              Genre
-            </label>
-            <select
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              className="flex-1 border border-border rounded px-2 py-1.5 text-sm font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
-            >
-              <option value="">Alle genres</option>
-              {genres.map((g) => (
-                <option key={g} value={g}>{g}</option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {/* Resultaattelling */}
-        <p className="text-xs font-sans text-text-muted self-center sm:ml-auto whitespace-nowrap">
-          <span className="font-semibold text-brand">{gefilterd.length}</span>{" "}
-          review{gefilterd.length !== 1 ? "s" : ""}
-        </p>
+      {/* Sorteren */}
+      <div className="flex items-center gap-2 mb-4">
+        <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
+          Sorteren
+        </label>
+        <select
+          value={sorteer}
+          onChange={(e) => setSorteer(e.target.value as SorteerOptie)}
+          className="border border-border rounded px-2 py-1.5 text-sm font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
+        >
+          {(Object.keys(SORTEER_LABELS) as SorteerOptie[]).map((opt) => (
+            <option key={opt} value={opt}>{SORTEER_LABELS[opt]}</option>
+          ))}
+        </select>
       </div>
 
       {/* Genre labels (klikbaar) */}
