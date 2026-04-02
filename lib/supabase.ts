@@ -28,6 +28,7 @@ export interface Artikel {
   score: number | null;
   trailer: string | null;
   item_type: "film" | "serie" | "overig" | null;
+  genre: string | null;
 }
 
 export async function getArtikelen(limit = 20): Promise<Artikel[]> {

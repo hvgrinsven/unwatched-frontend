@@ -130,10 +130,17 @@ export default async function ArtikelPagina({ params }: Props) {
         </span>
       </nav>
 
-      {/* Categorie tag */}
-      <span className="inline-block text-xs font-semibold font-sans uppercase tracking-wide px-2 py-0.5 rounded bg-tag-bg text-tag-text mb-3">
-        {categorieLabels[artikel.categorie] ?? artikel.categorie}
-      </span>
+      {/* Categorie tag + genre */}
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
+        <span className="inline-block text-xs font-semibold font-sans uppercase tracking-wide px-2 py-0.5 rounded bg-tag-bg text-tag-text">
+          {categorieLabels[artikel.categorie] ?? artikel.categorie}
+        </span>
+        {artikel.genre && (
+          <span className="inline-block text-xs font-semibold font-sans uppercase tracking-wide px-2 py-0.5 rounded bg-gray-100 text-text-muted">
+            {artikel.genre}
+          </span>
+        )}
+      </div>
 
       {/* Titel */}
       <h1 className="font-sora font-bold text-2xl sm:text-3xl leading-tight text-text-primary mb-3">

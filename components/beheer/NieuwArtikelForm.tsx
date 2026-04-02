@@ -7,6 +7,13 @@ import MultiImageUpload from "@/components/beheer/MultiImageUpload";
 
 const categorieOpties = ["film", "serie", "streaming", "trailer", "review", "nieuws"] as const;
 const itemTypeOpties = ["film", "serie", "overig"] as const;
+const genreOpties = [
+  "", "actie", "animatie", "avontuur", "biografie", "cabaret", "documentaire",
+  "drama", "erotiek", "familie", "fantasy", "historisch", "horror", "kerst",
+  "komedie", "misdaad", "muziek", "mystery", "nieuws", "oorlog", "tv programma",
+  "reality", "romantische komedie", "sciencefiction", "spelshow", "sport",
+  "talkshow", "thriller", "western",
+] as const;
 
 const leegForm = {
   titel: "",
@@ -19,6 +26,7 @@ const leegForm = {
   trailer: "",
   item_type: "overig" as string,
   thumbnail_url: "",
+  genre: "",
 };
 
 export default function NieuwArtikelForm() {
@@ -79,6 +87,7 @@ export default function NieuwArtikelForm() {
       trailer: form.trailer || null,
       item_type: form.item_type,
       thumbnail_url: form.thumbnail_url || null,
+      genre: form.genre || null,
     };
 
     const res = await fetch("/api/beheer/artikelen", {
@@ -154,6 +163,24 @@ export default function NieuwArtikelForm() {
             ))}
           </select>
         </Field>
+
+        <div className="flex flex-col gap-1 sm:col-span-2">
+          <label className="text-sm font-sans font-medium text-text-primary">Genre (optioneel)</label>
+          <select
+            name="genre"
+            value={form.genre}
+            onChange={handleChange}
+            className="w-full border border-border rounded px-3 py-2 text-sm font-sans focus:outline-none focus:ring-2 focus:ring-brand"
+          >
+            <option value="">— geen genre —</option>
+            {genreOpties.filter(Boolean).map((g) => (
+              <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
+          {form.categorie === "review" && !form.genre && (
+            <p className="text-xs text-amber-600 font-sans">⚠ Genre is aanbevolen voor reviews.</p>
+          )}
+        </div>
 
         <Field label="Slug">
           <input name="slug" value={form.slug} onChange={handleChange} required />
