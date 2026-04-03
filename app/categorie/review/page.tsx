@@ -16,12 +16,5 @@ export default async function ReviewsPagina() {
     new Set(artikelen.map((a) => a.genre).filter((g): g is string => !!g))
   ).sort((a, b) => a.localeCompare(b, "nl"));
 
-  return (
-    <div>
-      <div className="mb-5">
-        <h1 className="font-sora font-bold text-2xl text-text-primary">Reviews</h1>
-      </div>
-      <ReviewsOverzicht artikelen={artikelen} genres={genres} />
-    </div>
-  );
+  return <ReviewsOverzicht artikelen={artikelen} genres={genres} />;
 }

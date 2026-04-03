@@ -69,32 +69,22 @@ export default function ReviewsOverzicht({ artikelen, genres }: Props) {
         </select>
       </div>
 
-      {/* Genre labels (klikbaar) */}
+      {/* Genre filter */}
       {genres.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-5">
-          <button
-            onClick={() => setGenre("")}
-            className={`text-xs font-sans font-semibold px-2.5 py-1 rounded-full border transition-colors ${
-              genre === ""
-                ? "bg-brand text-white border-brand"
-                : "border-border text-text-muted hover:border-brand hover:text-brand"
-            }`}
+        <div className="flex items-center gap-2 mb-4">
+          <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
+            Genre
+          </label>
+          <select
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            className="border border-border rounded px-2 py-1.5 text-sm font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
           >
-            Alle genres
-          </button>
-          {genres.map((g) => (
-            <button
-              key={g}
-              onClick={() => setGenre(genre === g ? "" : g)}
-              className={`text-xs font-sans font-semibold px-2.5 py-1 rounded-full border transition-colors ${
-                genre === g
-                  ? "bg-brand text-white border-brand"
-                  : "border-border text-text-muted hover:border-brand hover:text-brand"
-              }`}
-            >
-              {g}
-            </button>
-          ))}
+            <option value="">Alle genres</option>
+            {genres.map((g) => (
+              <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
         </div>
       )}
 
