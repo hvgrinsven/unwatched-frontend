@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function ReviewsOverzicht({ artikelen, genres }: Props) {
-  const [sorteer, setSorteer] = useState<SorteerOptie>("score-hoog");
+  const [sorteer, setSorteer] = useState<SorteerOptie>("nieuwste");
   const [genre, setGenre] = useState<string>("");
 
   const gefilterd = useMemo(() => {
@@ -36,9 +36,9 @@ export default function ReviewsOverzicht({ artikelen, genres }: Props) {
         case "score-laag":
           return (a.score ?? 99) - (b.score ?? 99);
         case "nieuwste":
-          return new Date(b.published_at).getTime() - new Date(a.published_at).getTime();
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case "oudste":
-          return new Date(a.published_at).getTime() - new Date(b.published_at).getTime();
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
         case "az":
           return a.titel.localeCompare(b.titel, "nl");
         case "za":
@@ -53,40 +53,41 @@ export default function ReviewsOverzicht({ artikelen, genres }: Props) {
 
   return (
     <div>
-      {/* Sorteren */}
-      <div className="flex items-center gap-2 mb-4">
-        <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
-          Sorteren
-        </label>
-        <select
-          value={sorteer}
-          onChange={(e) => setSorteer(e.target.value as SorteerOptie)}
-          className="border border-border rounded px-2 py-1.5 text-sm font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
-        >
-          {(Object.keys(SORTEER_LABELS) as SorteerOptie[]).map((opt) => (
-            <option key={opt} value={opt}>{SORTEER_LABELS[opt]}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Genre filter */}
-      {genres.length > 0 && (
-        <div className="flex items-center gap-2 mb-4">
+      {/* Sorteer + genre naast elkaar */}
+      <div className="flex flex-row gap-2 mb-5 flex-wrap">
+        <div className="flex items-center gap-1.5">
           <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
-            Genre
+            Sorteren
           </label>
           <select
-            value={genre}
-            onChange={(e) => setGenre(e.target.value)}
-            className="border border-border rounded px-2 py-1.5 text-sm font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
+            value={sorteer}
+            onChange={(e) => setSorteer(e.target.value as SorteerOptie)}
+            className="border border-border rounded text-sm px-2 py-1 md:text-base md:px-3 md:py-2 font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
           >
-            <option value="">Alle genres</option>
-            {genres.map((g) => (
-              <option key={g} value={g}>{g}</option>
+            {(Object.keys(SORTEER_LABELS) as SorteerOptie[]).map((opt) => (
+              <option key={opt} value={opt}>{SORTEER_LABELS[opt]}</option>
             ))}
           </select>
         </div>
-      )}
+
+        {genres.length > 0 && (
+          <div className="flex items-center gap-1.5">
+            <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
+              Genre
+            </label>
+            <select
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+              className="border border-border rounded text-sm px-2 py-1 md:text-base md:px-3 md:py-2 font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
+            >
+              <option value="">Alle genres</option>
+              {genres.map((g) => (
+                <option key={g} value={g}>{g}</option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
 
       {/* Grid */}
       {gefilterd.length === 0 ? (
