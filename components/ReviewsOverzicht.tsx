@@ -54,38 +54,29 @@ export default function ReviewsOverzicht({ artikelen, genres }: Props) {
   return (
     <div>
       {/* Sorteer + genre naast elkaar */}
-      <div className="flex flex-row gap-2 mb-5 flex-wrap">
-        <div className="flex items-center gap-1.5">
-          <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
-            Sorteren
-          </label>
-          <select
-            value={sorteer}
-            onChange={(e) => setSorteer(e.target.value as SorteerOptie)}
-            className="border border-border rounded text-sm px-2 py-1 md:text-base md:px-3 md:py-2 font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
-          >
-            {(Object.keys(SORTEER_LABELS) as SorteerOptie[]).map((opt) => (
-              <option key={opt} value={opt}>{SORTEER_LABELS[opt]}</option>
-            ))}
-          </select>
-        </div>
+      <div className="flex flex-row gap-2 mb-5">
+        <select
+          value={sorteer}
+          onChange={(e) => setSorteer(e.target.value as SorteerOptie)}
+          className="flex-1 border border-border rounded text-sm px-2 py-1 md:text-base md:px-3 md:py-2 font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
+        >
+          <option value="" disabled>Sorteren op...</option>
+          {(Object.keys(SORTEER_LABELS) as SorteerOptie[]).map((opt) => (
+            <option key={opt} value={opt}>{SORTEER_LABELS[opt]}</option>
+          ))}
+        </select>
 
         {genres.length > 0 && (
-          <div className="flex items-center gap-1.5">
-            <label className="text-xs font-sans font-semibold text-text-muted whitespace-nowrap">
-              Genre
-            </label>
-            <select
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              className="border border-border rounded text-sm px-2 py-1 md:text-base md:px-3 md:py-2 font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
-            >
-              <option value="">Alle genres</option>
-              {genres.map((g) => (
-                <option key={g} value={g}>{g}</option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            className="flex-1 border border-border rounded text-sm px-2 py-1 md:text-base md:px-3 md:py-2 font-sans text-text-primary focus:outline-none focus:ring-2 focus:ring-brand"
+          >
+            <option value="">Alle genres</option>
+            {genres.map((g) => (
+              <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
         )}
       </div>
 
